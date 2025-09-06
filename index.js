@@ -5,6 +5,23 @@ canvas.width = 1335
 canvas.height = 576
 const gravity = 0.5
 
+//objeto para receber as imagens do personagem
+const playerSprites = {
+    idJump: new Image(),
+    idStoped: new Image(),
+    idRight: new Image(),
+    idLeft: new Image(),
+    idJumpRight: new Image(),
+    idJumpLeft: new Image(),
+}
+
+playerSprites.idStoped.src = './imagens/idStoped.png';
+playerSprites.idRight.src = './imagens/idRight.png';
+playerSprites.idLeft.src = './imagens/idLeft.png';
+playerSprites.idJumpLeft.src = './imagens/idJumpLeft.png';
+playerSprites.idJumpRight.src = './imagens/idJumpRight.png';
+
+
 const blocks = []
 
 console.log('Objeto TileMaps:', TileMaps)
@@ -38,9 +55,13 @@ const scaledCanvas = {
     height: canvas.height / 4
 }
 
+
 const player = new Player({
-    x:100,
-    y:1500,
+    position: {
+        x: 100,
+        y: 1500,
+    },
+    sprites: playerSprites, 
 })
 
 function respawn() {
@@ -147,6 +168,35 @@ for (const block of blocks  ) {
         }
     }
 }
+//toda a logica de carregamento dos sprites vinculados a direção que o personagem esta indo
+if (player.velocity.x > 0) {
+        player.lastDirection = 'right';
+    } else if (player.velocity.x < 0) {
+        player.lastDirection = 'left';
+    }
+
+    if (player.velocity.y !== 0) {
+        if (player.velocity.x === 0) {
+            player.currentSprite = player.sprites.idStoped;
+        }
+        else {
+            if (player.lastDirection === 'right') {
+                player.currentSprite = player.sprites.idJumpRight;
+            } else {
+                player.currentSprite = player.sprites.idJumpLeft;
+            }
+        }
+    }     
+    else if (player.velocity.x !== 0) {
+        if (player.lastDirection === 'right') {
+            player.currentSprite = player.sprites.idRight;
+        } else {
+            player.currentSprite = player.sprites.idLeft;
+        }
+    }     
+    else {
+        player.currentSprite = player.sprites.idStoped;
+    }
 
     // checa se o personagem caiu no void
     const mapHeightInPixels = tileMap.height * tileMap.tileheight;
