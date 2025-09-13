@@ -1,5 +1,9 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
+const dialogoInicio = document.getElementById('dialogo-inicio')
+const dialogoVitoria = document.getElementById('dialogo-vitoria')
+const btnIniciarJogo = document.getElementById('btn-iniciar-jogo')
+const btnReiniciar = document.getElementById('btn-reiniciar')
 
 canvas.width = 1335
 canvas.height = 576
@@ -23,10 +27,11 @@ playerSprites.idJumpRight.src = './imagens/idJumpRight.png';
 
 
 const blocks = []
+const spikeBlocks = []
 
 console.log('Objeto TileMaps:', TileMaps)
 
-const tileMap = TileMaps['PrimeiraFase1-0']
+const tileMap = TileMaps['Fase3']
 
 console.log('Mapa encontrado (tileMap):', tileMap)
 
@@ -37,11 +42,20 @@ if (tileMap) {
         blocosData.forEach((symbol, i) => {
             if (symbol !== 0) {
                 const x = (i % tileMap.width) * tileMap.tilewidth
-                const y = Math.floor(i / tileMap.width) * tileMap.tileheight                
-                blocks.push(new Block({ 
-                position: { x, y },
-                tileId: symbol,
-            }))
+                const y = Math.floor(i / tileMap.width) * tileMap.tileheight
+                // id do espinho = 41
+                if (symbol >= 41) {
+                    spikeBlocks.push(new Block({
+                        position: { x, y },
+                        tileId: symbol,
+                    }))
+                } 
+                else {
+                    blocks.push(new Block({
+                        position: { x, y },
+                        tileId: symbol,
+                    }))
+                }
             }
         })
     }
@@ -81,21 +95,40 @@ const keys = {
     }
 }
 
+//responsavel por carregar o fundo
 const background = new Sprite({
     position: {
         x: 0, 
         y: 0,
     },
-    imageSrc: './imagens/FundoSuperMeatBoyAmpliado.png'
+    imageSrc: './imagens/image 2.png',
+    width: 3424,
+    height: 1920,
 })
 
-const tilesetImage = new Image()
-tilesetImage.src = './imagens/tilesetgrass.png'
+const objetivo = new Sprite({
+    position: {
+        x: 350,
+        y: 673,
+    },
+    imageSrc: './imagens/NamoradaDoPersonagem.png', 
+    width: 32,
+    height: 32,
+})
+
+const blocosTilesetImage = new Image()
+blocosTilesetImage.src = './imagens/tilesetgrass.png'
+
+const espinhosTilesetImage = new Image()
+espinhosTilesetImage.src = './imagens/EspinhosMaiores.png'
+
+let animationId;
 
 function animate() {
-    window.requestAnimationFrame(animate)
+    animationId = window.requestAnimationFrame(animate)
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
+
 
     c.save()
     c.scale(scale, scale)
@@ -116,14 +149,20 @@ function animate() {
     blocks.forEach(block => {
         block.update()
     })
+    spikeBlocks.forEach(spike => {
+        spike.update()
+    })
+
+    objetivo.update()
 
     player.update()
     
     c.restore()
 
     player.velocity.x = 0
-    if (keys.d.pressed) player.velocity.x = 5
-    else if (keys.a.pressed) player.velocity.x = -5
+    if (keys.d.pressed) player.velocity.x = 6
+    else if (keys.a.pressed) player.velocity.x = -6
+    
 
 player.position.x += player.velocity.x
 
@@ -157,6 +196,8 @@ for (const block of blocks  ) {
             if ((player.position.y - player.velocity.y) + player.height <= block.position.y) {
                 player.position.y = block.position.y - player.height - 0.01
                 player.velocity.y = 0
+
+                player.canJump = true; 
                 break
             }
         }
@@ -198,6 +239,29 @@ if (player.velocity.x > 0) {
         player.currentSprite = player.sprites.idStoped;
     }
 
+    for (const spike of spikeBlocks) {
+        if (
+            player.position.y + player.height >= spike.position.y &&
+            player.position.y <= spike.position.y + spike.height &&
+            player.position.x <= spike.position.x + spike.width &&
+            player.position.x + player.width >= spike.position.x
+        ) {
+            respawn();
+            break;
+        }
+    }
+    //checa se o personagem chegou no objetivo
+    if (
+        player.position.y + player.height >= objetivo.position.y &&
+        player.position.y <= objetivo.position.y + objetivo.height &&
+        player.position.x <= objetivo.position.x + objetivo.width &&
+        player.position.x + player.width >= objetivo.position.x
+    ) {
+        cancelAnimationFrame(animationId);
+        dialogoVitoria.showModal();
+    }
+
+    
     // checa se o personagem caiu no void
     const mapHeightInPixels = tileMap.height * tileMap.tileheight;
     if (player.position.y > mapHeightInPixels) {
@@ -205,7 +269,7 @@ if (player.velocity.x > 0) {
     }
     }
 
-animate()
+
 window.addEventListener('keydown', (event) => {
     switch(event.key) {
         case 'd':
@@ -216,7 +280,14 @@ window.addEventListener('keydown', (event) => {
         break
         //tecla space
         case ' ':
-        player.velocity.y = -20
+        if (player.canJump) {
+            player.canJump = false;
+            if (keys.a.pressed || keys.d.pressed) {
+                player.velocity.y = -20;
+            } else {
+                player.velocity.y = -15;
+            }
+        }
         break
     }
 })
@@ -231,3 +302,16 @@ window.addEventListener('keyup', (event) => {
         break
     }
 })
+dialogoInicio.showModal();
+
+btnIniciarJogo.addEventListener('click', () => {
+    dialogoInicio.close();
+    animate();
+});
+
+
+btnReiniciar.addEventListener('click', () => {
+    dialogoVitoria.close(); 
+    respawn();              
+    animate();              
+});

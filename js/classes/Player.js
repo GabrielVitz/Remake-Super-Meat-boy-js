@@ -12,6 +12,8 @@ class Player {
         this.sprites = sprites
         this.currentSprite = this.sprites.idStoped
         this.lastDirection = 'right'
+        //vai permitir o personagem pular calo ele caia
+        this.canJump = true
     }
     draw() {
         if (!this.currentSprite || !this.currentSprite.complete || this.currentSprite.naturalHeight === 0) {

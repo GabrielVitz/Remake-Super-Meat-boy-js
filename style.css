@@ -1,0 +1,39 @@
+dialog {
+    background: #222;
+    color: white;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+dialog h1 {
+    color: red;
+}
+#conteiner-list{
+    display: flex;
+
+}
+#conteiner-list ul {
+    
+    list-style-type: disc white;
+    flex-direction: column;
+    justify-items: start;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+dialog button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
