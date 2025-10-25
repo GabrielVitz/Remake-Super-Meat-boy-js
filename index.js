@@ -1,9 +1,31 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
+//botões de jogo normal
 const dialogoInicio = document.getElementById('dialogo-inicio')
 const dialogoVitoria = document.getElementById('dialogo-vitoria')
 const btnIniciarJogo = document.getElementById('btn-iniciar-jogo')
 const btnReiniciar = document.getElementById('btn-reiniciar')
+
+//botões de ranking
+const tempoFinalEl = document.getElementById('tempo-final');
+const listaRankingEl = document.getElementById('lista-ranking');
+const dialogoRanking = document.getElementById('dialogo-ranking')
+const btnMostrarRanking = document.getElementById('btn-ranking');
+const btnJogarNovamente = document.getElementById('btn-jogar-novamente')
+
+let tempoInicial;
+let tempoFinal = 0;
+
+let rankingAtual = [
+    {nome: 'Gabriel', tempo:40000 }
+];
+
+function formatarTempo(ms) {
+    const minutos = Math.floor(ms / 60000);
+    const segundos = Math.floor((ms % 60000) / 1000);
+    const milissegundos = Math.floor(ms % 1000);
+    return `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}.${milissegundos.toString().padStart(3, '0')}`;
+}
 
 canvas.width = 1335
 canvas.height = 576
@@ -84,6 +106,8 @@ function respawn() {
     player.position.y = 1500;
     player.velocity.x = 0;
     player.velocity.y = 0;
+    //toda vez que morrer, reseta o cronometro
+    tempoInicial = performance.now();
 }
 
 const keys = {
@@ -158,6 +182,12 @@ function animate() {
     player.update()
     
     c.restore()
+
+    const tempoAtual = performance.now() - tempoInicial;
+    c.font = '30px Arial';
+    c.fillStyle = 'white';
+    c.textAlign = 'center';
+    c.fillText(formatarTempo(tempoAtual), canvas.width / 2, 40);
 
     player.velocity.x = 0
     if (keys.d.pressed) player.velocity.x = 6
@@ -257,8 +287,24 @@ if (player.velocity.x > 0) {
         player.position.x <= objetivo.position.x + objetivo.width &&
         player.position.x + player.width >= objetivo.position.x
     ) {
-        cancelAnimationFrame(animationId);
-        dialogoVitoria.showModal();
+    tempoFinal = performance.now() - tempoInicial;
+    tempoFinalEl.innerText = `Seu tempo: ${formatarTempo(tempoFinal)}`;
+
+    const recordeJogador = rankingAtual.find(item => item.nome === 'Jogador');
+
+    if (!recordeJogador || tempoFinal < recordeJogador.tempo) {
+
+        rankingAtual = rankingAtual.filter(item => item.nome !== 'Jogador');        
+        rankingAtual.push({ nome: 'Jogador', tempo: tempoFinal });
+    }
+
+    rankingAtual.sort((a, b) => a.tempo - b.tempo);
+    rankingAtual = rankingAtual.slice(0, 2);
+
+    cancelAnimationFrame(animationId);
+    dialogoVitoria.showModal();
+
+
     }
 
     
@@ -305,6 +351,7 @@ window.addEventListener('keyup', (event) => {
 dialogoInicio.showModal();
 
 btnIniciarJogo.addEventListener('click', () => {
+    tempoInicial = performance.now();
     dialogoInicio.close();
     animate();
 });
@@ -312,6 +359,28 @@ btnIniciarJogo.addEventListener('click', () => {
 
 btnReiniciar.addEventListener('click', () => {
     dialogoVitoria.close(); 
+    respawn();              
+    animate();              
+});
+
+function mostrarRanking() {
+    //limpa a lista antiga
+    listaRankingEl.innerHTML = '';
+
+    rankingAtual.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.nome}: ${formatarTempo(item.tempo)}`;
+        listaRankingEl.appendChild(li);
+    });
+}
+
+btnMostrarRanking.addEventListener('click', () => {
+    dialogoVitoria.close();  // Fecha o diálogo de vitória
+    mostrarRanking();        // Chama a função para preparar o ranking
+    dialogoRanking.showModal();
+}); 
+btnJogarNovamente.addEventListener('click', () => {
+    dialogoRanking.close(); 
     respawn();              
     animate();              
 });

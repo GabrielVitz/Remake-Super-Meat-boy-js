@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=d, initial-scale=1.0">
@@ -7,26 +8,39 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-    <canvas>
-    
-    </canvas>
-    <dialog id="dialogo-inicio">
-        <h1>Super Meat Boy Remake</h1>
-        <h3>Instruções</h3>
-        <div id="conteiner-list">
-            <ul>
-                <p>Use as teclas 'a' e 'd' para correr</p>
-                <p>Use a tecla 'space' para pular</p>
-                <p>Se você correr e pular, o pulo vai mais longe</p>
-            </ul>
-        </div>
-        <p>Divirta-se</p>
-        <button id="btn-iniciar-jogo">Jogar!!</button>
-    </dialog>
-    <dialog id="dialogo-vitoria">
-        <h1>Você Ganhou, Parabéns</h1>
-        <button id="btn-reiniciar">Reiniciar</button>
-    </dialog>
+<canvas>
+
+</canvas>
+
+<dialog id="dialogo-inicio">
+    <h1>Super Meat Boy Remake</h1>
+    <h3>Instruções</h3>
+    <div id="conteiner-list">
+        <ul>
+            <p>Use as teclas 'a' e 'd' para correr</p>
+            <p>Use a tecla 'space' para pular</p>
+            <p>Se você correr e pular, o pulo vai mais longe</p>
+            <p>Seu objetivo é percorrer a fase e chegar na outra personagem</p>
+        </ul>
+    </div>
+    <p id="ppc">Divirta-se</p>
+    <button id="btn-iniciar-jogo">Jogar!!</button>
+</dialog>
+
+<dialog id="dialogo-vitoria">
+    <h1>Você Ganhou, Parabéns!</h1>
+    <p id="tempo-final"></p>
+    <button id="btn-ranking">Ver Ranking</button>
+    <button id="btn-reiniciar">Jogar Novamente</button>
+</dialog>
+
+<dialog id="dialogo-ranking">
+    <h2>Melhores Tempos</h2>
+    <ol id="lista-ranking">
+        
+    </ol>
+    <button id="btn-jogar-novamente">Jogar Novamente</button>
+</dialog>
 
 <body style="background-color: black;">
 
@@ -35,6 +49,7 @@
 <script src="./js/classes/Block.js"> </script>
 <script src="./js/classes/Sprite.js"> </script>
 
-<script src="./js/data/TerceiraFase.js"> </script> 
+<script src="./js/data/TerceiraFase.js"> </script>
 <script src="/index.js"> </script>
+
 </html>
