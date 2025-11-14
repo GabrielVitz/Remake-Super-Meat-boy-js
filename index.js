@@ -5,7 +5,7 @@ const dialogoInicio = document.getElementById('dialogo-inicio')
 const dialogoVitoria = document.getElementById('dialogo-vitoria')
 const btnIniciarJogo = document.getElementById('btn-iniciar-jogo')
 const btnReiniciar = document.getElementById('btn-reiniciar')
-
+//
 //botões de ranking
 const tempoFinalEl = document.getElementById('tempo-final');
 const listaRankingEl = document.getElementById('lista-ranking');
