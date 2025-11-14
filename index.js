@@ -351,9 +351,25 @@ window.addEventListener('keyup', (event) => {
 dialogoInicio.showModal();
 
 btnIniciarJogo.addEventListener('click', () => {
+
     tempoInicial = performance.now();
     dialogoInicio.close();
     animate();
+
+    const nomeJogador = document.getElementById('nome-jogador').value;
+
+    if (nomeJogador == '' ) {
+        alert("Por favor, informe um nome.");
+    } else if (nomeJogador.length >= 20) {
+        alert("Seu nome é muito grande, poderia diminui um pouco ? >:(");
+    } else {
+
+        console.log("Seu nome = " + nomeJogador);
+        tempoInicial = performance.now();
+        dialogoInicio.close();
+        animate();
+    }
+
 });
 
 
