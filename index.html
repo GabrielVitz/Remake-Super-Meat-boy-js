@@ -14,49 +14,35 @@
 
 <dialog id="dialogo-inicio">
     <h1>Super Meat Boy Remake</h1>
-    <a href="https://store.steampowered.com/app/40800/Super_Meat_Boy/" target="_blank">
-        <img src="/imagens/superMeatBoy-personagem.png" alt="" class="imagem">
-    </a>
-    <div id="nome">
-        <p>Informe Seu Nome</p>
-        <input type="text"  id="nome-jogador">
-    </div>
-    
     <h3>Instruções</h3>
     <div id="conteiner-list">
         <ul>
-            <p>Use as teclas 'a' e 'd' para correr (não ative o caps lock) </p>
+            <p>Use as teclas 'a' e 'd' para correr</p>
             <p>Use a tecla 'space' para pular</p>
             <p>Se você correr e pular, o pulo vai mais longe</p>
-            <p>Seu objetivo é percorrer a fase e encostar na personagem rosa e tentar fazer um tempo melhor que o criador do jogo</p>
+            <p>Seu objetivo é percorrer a fase e chegar na outra personagem</p>
         </ul>
     </div>
     <p id="ppc">Divirta-se</p>
-    <div id="button-area">
-        <button type="submit" id="btn-iniciar-jogo">Jogar!!</button>
-    </div>
+    <button id="btn-iniciar-jogo">Jogar!!</button>
 </dialog>
 
 <dialog id="dialogo-vitoria">
     <h1>Você Ganhou, Parabéns!</h1>
     <p id="tempo-final"></p>
-    <div id="main-buttons">
-        <button id="btn-ranking">Ver Ranking</button>
-        <button id="btn-reiniciar">Jogar Novamente</button>
-    </div>
+    <button id="btn-ranking">Ver Ranking</button>
+    <button id="btn-reiniciar">Jogar Novamente</button>
 </dialog>
 
 <dialog id="dialogo-ranking">
     <h2>Melhores Tempos</h2>
-    <div style = " word-wrap: break-word;">
-        <ol id="lista-ranking">
+    <ol id="lista-ranking">
         
-        </ol>
-    </div>
+    </ol>
     <button id="btn-jogar-novamente">Jogar Novamente</button>
 </dialog>
 
-<body style="background-color: rgb(255, 156, 132);">
+<body style="background-color: black;">
 
 </body>
 <script src="./js/classes/Player.js"> </script>

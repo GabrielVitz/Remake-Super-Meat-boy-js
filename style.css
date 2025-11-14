@@ -3,13 +3,6 @@
     text-align: justify;
     
 }
-
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
 h3 {
     text-align: center;
 }
@@ -33,23 +26,8 @@ dialog h1 {
     display: flex;
 
 }
-#nome {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    padding: 0px 40px 0px 40px;
-}   
-#nome-jogador {
-    width: 100%;
-    color: red;
-    font-size: large;
-    font-weight: bold;
-    border-radius: 5px;
-}
 #conteiner-list ul {
-    padding: 0px 40px 0px 40px;
-    margin: 0px;
+    
     list-style-type: disc white;
     flex-direction: column;
     justify-items: start;
@@ -58,18 +36,9 @@ dialog h1 {
 #dialogo-inicio::backdrop, dialog::backdrop {
     background: rgba(0, 0, 0, 0.7);
 }
-#dialogo-inicio {
-        background: #222;
-    color: white;
-    border: 2px solid #eee;
-    border-radius: 10px;
-    padding: 20px;
-    width: 500px;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
+
 dialog button {
-    
+    margin-top: 15px;
     padding: 10px 20px;
     background-color: #5cb85c;
     color: white;
@@ -77,11 +46,6 @@ dialog button {
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    text-align: center;
-}
-button:hover{
-    background-color: #62ee62;
-    color: rgb(0, 0, 0);
 }
 #lista-ranking {
     list-style-position: inside;
@@ -90,35 +54,4 @@ button:hover{
 }
 #lista-ranking li {
     margin-bottom: 10px;
-}
-.imagem {
-    width: 150px;
-    height: 100px;
-}
-h1 {
-    text-align: center;
-}
-#button-area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-#btn-iniciar-jogo {
-    width: 200px;
-    text-align: center;
-}
-#main-buttons {
-    gap: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-#btn-ranking {
-
-    width: 200px;
-}
-#btn-reiniciar {
-    width: 200px;
 }

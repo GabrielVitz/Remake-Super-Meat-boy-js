@@ -12,7 +12,7 @@ class Player {
         this.sprites = sprites
         this.currentSprite = this.sprites.idStoped
         this.lastDirection = 'right'
-        //vai permitir o personagem pular caso ele caia
+        //vai permitir o personagem pular calo ele caia
         this.canJump = true
     }
     draw() {
@@ -29,6 +29,11 @@ class Player {
         )
     }
     update(){
-        this.draw()
+        this.draw() /*
+        this.position.y += this.velocity.y
+        this.position.x += this.velocity.x
+        if(this.position.y + 32 + this.velocity.y < canvas.height)
+            this.velocity.y += gravity
+        else this.velocity.y = 0  */
     }
 }

@@ -17,7 +17,7 @@ let tempoInicial;
 let tempoFinal = 0;
 
 let rankingAtual = [
-    {nome: 'EuGabriel', tempo:17500 }
+    {nome: 'Gabriel', tempo:40000 }
 ];
 
 function formatarTempo(ms) {
@@ -29,14 +29,6 @@ function formatarTempo(ms) {
 
 canvas.width = 1335
 canvas.height = 576
-
-const widthTela = 2670;
-const heightTela = 1152;
-
-let scale = 1;
-let offsetX = 0;
-let offsetY = 0;
-
 const gravity = 0.5
 
 //objeto para receber as imagens do personagem
@@ -92,24 +84,13 @@ if (tileMap) {
 }
 
 const mapWidthInPixels = tileMap.width * tileMap.tilewidth
+const scale = 0.5
 
-function resizeGame() {
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    scale = Math.min(
-        canvas.width / widthTela,
-        canvas.height / heightTela
-    );
-
-    offsetX = (canvas.width - (widthTela * scale)) / 2;
-    offsetY = (canvas.height - (heightTela * scale)) / 2;
-
-    c.imageSmoothingEnabled = false;
+const scaledCanvas = {
+    width: canvas.width / 4,
+    height: canvas.height / 4
 }
-resizeGame();
-window.addEventListener('resize', resizeGame);
+
 
 const player = new Player({
     position: {
@@ -169,27 +150,22 @@ let animationId;
 
 function animate() {
     animationId = window.requestAnimationFrame(animate)
-    c.fillStyle = '#ff9c84'
+    c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
 
 
     c.save()
-    c.translate(offsetX, offsetY)
-
     c.scale(scale, scale)
 
-    let cameraX = -player.position.x + (widthTela / 2 )
-    let cameraY = -player.position.y + (heightTela / 1.4)
+    let cameraX = -player.position.x + (canvas.width / 2 / scale)
+    let cameraY = -player.position.y + (canvas.height / 1.4 / scale)
 
     if (cameraX > 0) {
         cameraX = 0
     }    
-    if (cameraX < -(mapWidthInPixels - widthTela)) {
-        cameraX = -(mapWidthInPixels - widthTela)
+    if (cameraX < -(mapWidthInPixels - canvas.width / scale)) {
+        cameraX = -(mapWidthInPixels - canvas.width / scale)
     }
-
-
-
     c.translate(cameraX, cameraY)
 
     // Desenha os elementos do jogo
@@ -314,15 +290,12 @@ if (player.velocity.x > 0) {
     tempoFinal = performance.now() - tempoInicial;
     tempoFinalEl.innerText = `Seu tempo: ${formatarTempo(tempoFinal)}`;
 
-    const nomeJogador = document.getElementById('nome-jogador').value;
-    const nomeRankingJogador = nomeJogador + " (você)";
+    const recordeJogador = rankingAtual.find(item => item.nome === 'Jogador');
 
-    const recordeJogador = rankingAtual.find(item => item.nome === nomeRankingJogador );
-    
     if (!recordeJogador || tempoFinal < recordeJogador.tempo) {
 
-        rankingAtual = rankingAtual.filter(item => item.nome !== nomeRankingJogador);        
-        rankingAtual.push({ nome: nomeRankingJogador, tempo: tempoFinal });
+        rankingAtual = rankingAtual.filter(item => item.nome !== 'Jogador');        
+        rankingAtual.push({ nome: 'Jogador', tempo: tempoFinal });
     }
 
     rankingAtual.sort((a, b) => a.tempo - b.tempo);
@@ -378,26 +351,9 @@ window.addEventListener('keyup', (event) => {
 dialogoInicio.showModal();
 
 btnIniciarJogo.addEventListener('click', () => {
-    const nomeJogador = document.getElementById('nome-jogador').value;
-
-    if (nomeJogador == '' ) {
-
-        // const area = document.getElementById('button-area');
-        // let label = document.createElement('p');
-        // label.innerHTML = "Informe um nome PORRA"
-
-        alert("Por favor, informe um nome.");
-    } else if (nomeJogador.length >= 10) {
-        alert("Seu nome é muito grande, poderia diminui um pouco ? >:(");
-    } else {
-
-        console.log("Seu nome = " + nomeJogador);
-        tempoInicial = performance.now();
-        dialogoInicio.close();
-        animate();
-    }
-
-    
+    tempoInicial = performance.now();
+    dialogoInicio.close();
+    animate();
 });
 
 
